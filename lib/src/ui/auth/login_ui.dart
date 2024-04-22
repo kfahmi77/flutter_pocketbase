@@ -26,8 +26,10 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController =
+      TextEditingController(text: 'fahmi77');
+  final TextEditingController _passwordController =
+      TextEditingController(text: 'fahmi0810');
 
   bool _isButtonEnabled = false;
 
@@ -49,7 +51,8 @@ class _LoginFormState extends State<LoginForm> {
 
   void _updateButtonState() {
     setState(() {
-      _isButtonEnabled = _usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty;
+      _isButtonEnabled = _usernameController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty;
     });
   }
 
@@ -60,7 +63,7 @@ class _LoginFormState extends State<LoginForm> {
         if (state.status == LoginStatus.loading) {
           _isButtonEnabled = false;
         } else if (state.status == LoginStatus.success) {
-          // Navigate to next screen
+          Navigator.pushNamed(context, '/dashboard');
         } else {
           _isButtonEnabled = true;
         }
@@ -75,14 +78,16 @@ class _LoginFormState extends State<LoginForm> {
                   controller: _usernameController,
                   decoration: InputDecoration(
                     labelText: 'Username',
-                    errorText: state.usernameInvalid ? 'Invalid username' : null,
+                    errorText:
+                        state.usernameInvalid ? 'Invalid username' : null,
                   ),
                 ),
                 TextField(
                   controller: _passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    errorText: state.passwordInvalid ? 'Invalid password' : null,
+                    errorText:
+                        state.passwordInvalid ? 'Invalid password' : null,
                   ),
                 ),
                 ElevatedButton(
@@ -92,9 +97,12 @@ class _LoginFormState extends State<LoginForm> {
                       : null,
                   child: const Text('Login'),
                 ),
-                if (state.status == LoginStatus.loading) CircularProgressIndicator(),
-                if (state.status == LoginStatus.failure) Text('Login failed'),
-                if (state.status == LoginStatus.success) Text('Login successful'),
+                if (state.status == LoginStatus.loading)
+                  const CircularProgressIndicator(),
+                if (state.status == LoginStatus.failure)
+                  const Text('Login failed'),
+                if (state.status == LoginStatus.success)
+                  const Text('Login successful'),
               ],
             ),
           );
