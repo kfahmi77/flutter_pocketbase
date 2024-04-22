@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../shared/utils/url.dart';
+
 part 'login_event.dart';
 part 'login_state.dart';
 
@@ -43,13 +45,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       await Future.delayed(const Duration(seconds: 1));
       log(event.username);
       log(event.password);
-      if (event.username == 'test' && event.password == 'test') {
-        emit(state.copyWith(status: LoginStatus.success));
-      } else {
-        emit(state.copyWith(
-          status: LoginStatus.failure,
-        ));
-      }
+      final result = await pb
+          .collection('users')
+          .authWithPassword(event.username, event.password);
+      log(result.record.toString());
+      emit(state.copyWith(status: LoginStatus.success));
     } catch (_) {
       emit(state.copyWith(status: LoginStatus.failure));
     }
